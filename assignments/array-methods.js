@@ -56,28 +56,71 @@ const runners = [{"id":1,"first_name":"Charmain","last_name":"Seiler","email":"c
 // ==== Challenge 1: Use .forEach() ==== //
 // The event director needs both the first and last names of each runner for their running bibs.  Combine both the first and last names into a new array called fullName. 
 let fullName = [];
+
+runners.forEach(runner => {
+    let fullNameString = runner.first_name + " " + runner.last_name
+    fullName.push(fullNameString)
+})
+
 console.log(fullName);
+
 
 // ==== Challenge 2: Use .map() ====
 // The event director needs to have all the runner's first names converted to uppercase because the director BECAME DRUNK WITH POWER. Convert each first name into all caps and log the result
 let allCaps = [];
+
+allCaps = runners.map(runner =>         // IMPORTANT! note to self you can acutally use like a for each loop and push from inside the scope of the loop but this defeates the array that is returned from the .map method. Don't use map unless you intend to use the returned array.
+     runner.first_name.toUpperCase()
+)
 console.log(allCaps); 
 
 // ==== Challenge 3: Use .filter() ====
 // The large shirts won't be available for the event due to an ordering issue.  Get a list of runners with large sized shirts so they can choose a different size. Return an array named largeShirts that contains information about the runners that have a shirt size of L and log the result
 let largeShirts = [];
+largeShirts = runners.filter(runner => runner.shirt_size === "L")
 console.log(largeShirts);
+/*UNCOMMENT TO SEE RESULTS FROM ABOVE*/
+ //largeShirts.forEach(person=> console.log(`${person.first_name} you need to pick another size shirt the ${person.shirt_size} you picked is no longer available.`))
 
 // ==== Challenge 4: Use .reduce() ====
 // The donations need to be tallied up and reported for tax purposes. Add up all the donations into a ticketPriceTotal array and log the result
 let ticketPriceTotal = [];
+
+ticketPriceTotal = runners.reduce((accum, currVal) => accum + currVal.donation,0 )  //note to self this the accum arg here is basically saying let accum = 0, the second arg then is the number that we want to add up so here we need to access this though the object via dot or bracket notation.
+
 console.log(ticketPriceTotal);
 
 // ==== Challenge 5: Be Creative ====
 // Now that you have used .forEach(), .map(), .filter(), and .reduce().  I want you to think of potential problems you could solve given the data set and the 5k fun run theme.  Try to create and then solve 3 unique problems using one or many of the array methods listed above.
 
-// Problem 1
+// Problem 1  allow to alpabetically order runners and assign a number to the end of their name to associate for some lookup criteria
+let lastNameOrdered = []
+runners.forEach(runner => lastNameOrdered.push(runner.last_name))
+lastNameOrdered.sort()
+let runningNumberSuffix = 1
+lastNameOrdered = lastNameOrdered.map(runner => runner + runningNumberSuffix++)
+console.log(lastNameOrdered)
 
-// Problem 2
+// Problem 2 Give a shout out to those runners accociated company for donating an amount threshold. Help these runner get recognition or a raise!
 
-// Problem 3
+let shoutOutArray = []
+shoutOutArray = runners.filter(runner =>  runner.donation > 275)
+shoutOutArray.forEach(runner => console.log(`we could like to think the follolwing runners from ${runner.company_name} their donations`))
+
+// Problem 3  we need to change all the emails to .com so those with alternate etensions need to be replaced with the .com
+
+let newEmails= []
+runners.forEach(runner => {
+      let splitEmail = runner.email.split("")
+        for(let i=0;i<splitEmail.length;i++){
+            if(splitEmail[i] === "."){
+                splitEmail.splice(i)
+                let email = splitEmail.join("")
+               newEmails.push(email + ".com")
+            }
+
+        } 
+
+})
+
+console.log(newEmails)
